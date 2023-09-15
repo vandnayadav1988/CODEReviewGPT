@@ -42,7 +42,7 @@ export const robot = (app: Probot) => {
   };
 
   app.on(
-    ['pull_request.opened', 'pull_request.synchronize'],
+    ['pull_request.opened', 'pull_request.synchronize','pull_request.draft','pull_request.reopened'],
     async (context) => {
       const repo = context.repo();
       const chat = await loadChat(context);
@@ -56,8 +56,7 @@ export const robot = (app: Probot) => {
 
       if (
         pull_request.state === 'closed' ||
-        pull_request.locked ||
-        pull_request.draft
+        pull_request.locked         
       ) {
         console.log('invalid event paylod');
         return 'invalid event paylod';
@@ -82,7 +81,7 @@ export const robot = (app: Probot) => {
 
       let { files: changedFiles, commits } = data.data;
 
-      if (context.payload.action === 'synchronize' && commits.length >= 2) {
+      if (context.payload.action === 'synchronize' && commits.length >= 10) {
         const {
           data: { files },
         } = await context.octokit.repos.compareCommits({
