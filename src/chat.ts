@@ -23,9 +23,9 @@ export class Chat {
       ? `Answer me in ${process.env.LANGUAGE},`
       : '';
 
-    const prompt =
-      process.env.PROMPT ||
-        'Below is a code patch, please help me do a brief code review on it. Any bug risks and/or improvement suggestions are welcome:';
+    const prompt = ( process.env.PROMPT ||
+            'Below is a code patch, please help me do a brief code review on it. Any bug risks and/or improvement suggestions are welcome:')
+        && ('Check if unit tests results conform to swagger.json file');
 
     return `${prompt}, ${answerLanguage}:
     ${patch}
